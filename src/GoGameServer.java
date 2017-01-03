@@ -1,15 +1,30 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import org.json.simple.JSONObject;
 
-public class GoGameServer {
-    /**
-     * Server for a network multi-player Go Game.
-     */
-
+public class Bridge implements Runnable {
+	private Socket socket2;
+	private Socket socket;
+	public void Socket(Socket socket, Socket socket2) {
+        this.socket = socket;
+        this.socket2 = socket2;}
+	@Override
+	public void run() {
+		JSONObject obj = new JSONObject();
+		obj.put("test", "test");
+		obj.put("test", new Integer(100));
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(
+		        socket.getOutputStream());
+		        
+		    out.writeObject(obj);
+		}catch(Exception e){}
+		// TODO Auto-generated method stub
+		
+		
+	}
 
 }
+
