@@ -2,7 +2,7 @@ import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class GoGameServer {
 
 	static ServerSocket serverSocket;
 	static Socket socket;
