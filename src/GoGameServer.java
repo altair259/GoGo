@@ -1,30 +1,31 @@
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.DataOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.json.simple.JSONObject;
+public class Server {
 
-public class Bridge implements Runnable {
-	private Socket socket2;
-	private Socket socket;
-	public void Socket(Socket socket, Socket socket2) {
-        this.socket = socket;
-        this.socket2 = socket2;}
-	@Override
-	public void run() {
-		JSONObject obj = new JSONObject();
-		obj.put("key1", "test");
-		obj.put("key2", new Integer(100));
-		try {
-			ObjectOutputStream out = new ObjectOutputStream(
-		        socket.getOutputStream());
-		        
-		    out.writeObject(obj);
-		}catch(Exception e){}
-		// TODO Auto-generated method stub
-		
-		
+	static ServerSocket serverSocket;
+	static Socket socket;
+	static DataOutputStream out;
+	static Socket socket2;
+	
+
+	public static void main(String[] args)throws Exception{
+		 Socket socket = null;
+		 Socket socket2 = null;
+		System.out.println("Starting server..");
+		serverSocket = new ServerSocket(7777);
+		System.out.println("Server started");
+		socket = serverSocket.accept();
+		socket2 = serverSocket.accept();
+		Bridge bridge = new Bridge(socket, socket2);
+		Thread thread = new Thread(bridge);
+		thread.run();
+		while(1==1){
+			serverSocket.accept();
+		}
 	}
-
 }
+
+
 
