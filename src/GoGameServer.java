@@ -13,8 +13,8 @@ public class Bridge implements Runnable {
 	@Override
 	public void run() {
 		JSONObject obj = new JSONObject();
-		obj.put("test", "test");
-		obj.put("test", new Integer(100));
+		obj.put("key1", "test");
+		obj.put("key2", new Integer(100));
 		try {
 			ObjectOutputStream out = new ObjectOutputStream(
 		        socket.getOutputStream());
