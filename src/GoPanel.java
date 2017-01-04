@@ -18,11 +18,13 @@ import org.json.simple.JSONObject;
 class GoPanel extends JPanel {
 
     Square[][] board;
-    boolean whiteToMove;
+    Boolean color = null;
+    Boolean colorForMove = true;
 	Socket socket = null;
     ObjectInputStream in = null;
     ObjectOutputStream out = null;
     JSONObject json = null;
+    JSONObject recivedData = null;
 
     GoPanel(int dimension, Socket socket) {
     	this.socket = socket;
@@ -33,10 +35,39 @@ class GoPanel extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	System.out.println("tutaj doszedłem GoPanel");
         board = new Square[dimension][dimension];
-        whiteToMove = true;
         initBoard(dimension);
+        
+    }
+    public void startGame(){
+    	try{
+    		recivedData = (JSONObject)in.readObject();
+    		System.out.println("takietam kolory " + recivedData);
+    		color = (Boolean) recivedData.get("color");
+    		(new Thread(new Game())).start();
+    	} catch (Exception e){}
+    }
+    private class Game implements Runnable{
+    	
+    	public void run(){
+	        try{
+	        	while(true){
+	            	System.out.println("tutaj doszedłem GoPanel");
+	        		recivedData = (JSONObject)in.readObject();
+	        		System.out.println(recivedData);
+	        		if(recivedData.get("operation").equals("set")){
+	        			int x = (int)recivedData.get("moveX");
+	        			int y = (int)recivedData.get("moveY");
+	        			Stone stone = (Stone)((Boolean)recivedData.get("color")?Stone.BLACK:Stone.WHITE);
+	        			board[x][y].setStone(stone);
+	        			colorForMove = (Boolean)(recivedData.get("color"));
+	        		}
+	        		repaint();
+	        	}
+	        }catch(Exception e){
+	        	e.printStackTrace();
+	        }
+    	}
     }
 
     private void initBoard(int dimension) {
@@ -49,12 +80,16 @@ class GoPanel extends JPanel {
         }
         repaint();
     }
+    
+    
 
     private class Square extends JPanel {
 
         Stone stone;
         final int row;
         final int col;
+        
+        void setStone(Stone s){ stone = s;}
 
         Square(int r, int c) {
             stone = Stone.NONE;
@@ -63,18 +98,15 @@ class GoPanel extends JPanel {
             super.addMouseListener(new MouseAdapter(){
 				@Override
                 public void mouseClicked(MouseEvent me) {
-              try {
-	            	json = new JSONObject();
-	            	JSONObject transmitData = new JSONObject();
-	        		transmitData.put("moveX", row);
-	        		transmitData.put("moveY", col);
-	        		transmitData.put("Color", "mkyong.com");
-					out.writeObject(json);
-	        		JSONObject recived1Data = (JSONObject) in.readObject();
-	    			boolean legal = (boolean) recived1Data.get("legal");
-
+					try {
+						JSONObject transmitData = new JSONObject();
+						transmitData.put("moveX", row);
+						transmitData.put("moveY", col);
+						if(color.equals(colorForMove)){
+							out.writeObject(transmitData);
+						}
 	        		
-      		}catch(Exception e){}
+					}catch(Exception e){}
 					
                 	/*try {
             			ObjectInputStream in = new ObjectInputStream(
@@ -84,7 +116,7 @@ class GoPanel extends JPanel {
                     stone = whiteToMove ? Stone.WHITE : Stone.BLACK;
                     whiteToMove = !whiteToMove;
                     repaint();*/
-                }
+				}
             });
         }
 
