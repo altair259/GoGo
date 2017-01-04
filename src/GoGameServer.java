@@ -2,7 +2,7 @@ import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class GoGameServer {
+public class Server {
 
 	static ServerSocket serverSocket;
 	static Socket socket;
@@ -17,15 +17,16 @@ public class GoGameServer {
 		serverSocket = new ServerSocket(7777);
 		System.out.println("Server started");
 		socket = serverSocket.accept();
+		System.out.println("First accepted");
 		socket2 = serverSocket.accept();
+		System.out.println("Second accepted");
 		Bridge bridge = new Bridge(socket, socket2);
-		Thread thread = new Thread(bridge);
-		thread.run();
-		while(1==1){
-			serverSocket.accept();
+		System.out.println("Created Runnable Object");
+		(new Thread(bridge)).start();
+		while(true){
+			Thread.sleep(40);
+//			serverSocket.accept();
 		}
 	}
 }
-
-
 
