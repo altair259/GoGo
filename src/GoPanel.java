@@ -19,21 +19,21 @@ class GoPanel extends JPanel {
 
     Square[][] board;
     boolean whiteToMove;
-	private Socket socket;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+	Socket socket = null;
+    ObjectInputStream in = null;
+    ObjectOutputStream out = null;
     JSONObject json = null;
 
     GoPanel(int dimension, Socket socket) {
+    	this.socket = socket;
     	try {
-			in = new ObjectInputStream(socket.getInputStream());
-	    	out = new ObjectOutputStream(socket.getOutputStream());
-		} catch (IOException e) {
+	    	out = new ObjectOutputStream(this.socket.getOutputStream());
+			in = new ObjectInputStream(this.socket.getInputStream());
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	this.socket = socket;
+    	System.out.println("tutaj doszedłem GoPanel");
         board = new Square[dimension][dimension];
         whiteToMove = true;
         initBoard(dimension);
@@ -63,17 +63,19 @@ class GoPanel extends JPanel {
             super.addMouseListener(new MouseAdapter(){
 				@Override
                 public void mouseClicked(MouseEvent me) {
-//
+              try {
 	            	json = new JSONObject();
 	            	JSONObject transmitData = new JSONObject();
 	        		transmitData.put("moveX", row);
 	        		transmitData.put("moveY", col);
 	        		transmitData.put("Color", "mkyong.com");
+					out.writeObject(json);
+	        		JSONObject recived1Data = (JSONObject) in.readObject();
+	    			boolean legal = (boolean) recived1Data.get("legal");
+
 	        		
-	            	
-	            	try {
-						out.writeObject(json);
-					} catch (IOException e) {}
+      		}catch(Exception e){}
+					
                 	/*try {
             			ObjectInputStream in = new ObjectInputStream(
             					socket.getInputStream());
