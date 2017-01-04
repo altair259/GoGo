@@ -13,14 +13,15 @@ public class Client {
 		JSONObject obj = new JSONObject();
 		Board board = null;
 		
-		try {
-			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+//		try {
+//			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 			
 //			obj = (JSONObject) in.readObject();
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
+//		}catch(Exception e){
+//			System.out.println(e.getMessage());
+//		}
 		
 		board = new Board(socket);
 	}
 }
+
