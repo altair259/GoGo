@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -18,8 +20,8 @@ import org.json.simple.JSONObject;
 class GoPanel extends JPanel {
 
     Square[][] board;
-    Boolean color = null;
-    Boolean colorForMove = true;
+    Stone color = null;
+    Stone colorForMove = Stone.WHITE;
 	Socket socket = null;
     ObjectInputStream in = null;
     ObjectOutputStream out = null;
@@ -43,7 +45,7 @@ class GoPanel extends JPanel {
     	try{
     		recivedData = (JSONObject)in.readObject();
     		System.out.println("takietam kolory " + recivedData);
-    		color = (Boolean) recivedData.get("color");
+    		color = (Stone) recivedData.get("color");
     		(new Thread(new Game())).start();
     	} catch (Exception e){}
     }
@@ -52,15 +54,17 @@ class GoPanel extends JPanel {
     	public void run(){
 	        try{
 	        	while(true){
-	            	System.out.println("tutaj doszedłem GoPanel");
 	        		recivedData = (JSONObject)in.readObject();
 	        		System.out.println(recivedData);
 	        		if(recivedData.get("operation").equals("set")){
 	        			int x = (int)recivedData.get("moveX");
 	        			int y = (int)recivedData.get("moveY");
-	        			Stone stone = (Stone)((Boolean)recivedData.get("color")?Stone.BLACK:Stone.WHITE);
+	        			Stone stone = (Stone)recivedData.get("color");
 	        			board[x][y].setStone(stone);
-	        			colorForMove = (Boolean)(recivedData.get("color"));
+	        			colorForMove = (Stone)(recivedData.get("color"));
+	        			for(Point p : (ArrayList<Point>)recivedData.get("listForRemove")){
+	        				board[p.x][p.y].setStone(Stone.NONE);
+	        			}
 	        		}
 	        		repaint();
 	        	}
@@ -156,4 +160,3 @@ class GoPanel extends JPanel {
             stone.paint(g, w);
         }
     }
-}
