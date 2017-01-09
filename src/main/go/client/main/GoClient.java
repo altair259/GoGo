@@ -44,6 +44,8 @@ public class GoClient {
     public GoClient(int port) {
         PORT = port;
 
+        onlinePlayers.add("Bot");
+
         currnetlyOnlineLabel.setHorizontalAlignment(SwingConstants.CENTER);
         playerNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         currentPlayerLabel.setForeground(Color.WHITE);

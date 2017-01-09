@@ -14,7 +14,7 @@ import go.bot.Bot;
 import go.client.main.GoPlayer;
 import go.game.engine.*;
 
-public class GoServer {
+public class Server {
 
     private static final int PORT = 8080;
 
@@ -34,7 +34,7 @@ public class GoServer {
         }
 
     }
-    public GoServer() {
+    public Server() {
         try {
             listener = new ServerSocket(PORT);
             listener.setSoTimeout(100);
@@ -53,7 +53,7 @@ public class GoServer {
         private BufferedReader in;
         private PrintWriter out;
         private GoPlayer player, opponentPlayer;
-        private AlphaBot alphaBot;
+        private Bot alphaBot;
         private GameEngine game;
         private TerritoryBoard territoryMode;
         private BoardFieldOwnership playerColor;
@@ -256,7 +256,7 @@ public class GoServer {
 
                             player = new GoPlayer(BoardFieldOwnership.BLACK, GameEngineStatus.GAME);
 //                          opponentPlayer = new GoPlayer(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
-                            alphaBot = new AlphaBot(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
+                            alphaBot = new Bot(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
                             game = new GameEngine(alphaBot ,player);
                             alphaBot.setGameEngine(game);
 

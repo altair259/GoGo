@@ -1,5 +1,7 @@
 package go.game.engine;
 
+import go.game.exception.IncorrectMoveException;
+
 import java.awt.*;
 import java.util.HashMap;
 
