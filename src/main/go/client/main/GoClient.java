@@ -48,11 +48,11 @@ public class GoClient {
 
         currnetlyOnlineLabel.setHorizontalAlignment(SwingConstants.CENTER);
         playerNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        currentPlayerLabel.setForeground(Color.WHITE);
+        currentPlayerLabel.setForeground(Color.BLACK);
         currentPlayerLabel.setBounds(300, 50, 170, 20);
-        playerNameLabel.setForeground(Color.YELLOW);
+        playerNameLabel.setForeground(Color.MAGENTA);
         playerNameLabel.setBounds(300, 70, 170, 20);
-        currnetlyOnlineLabel.setForeground(Color.WHITE);
+        currnetlyOnlineLabel.setForeground(Color.BLACK);
         currnetlyOnlineLabel.setBounds(10, 20, 170, 20);
         onlinePlayersScrollPane.setBounds(10, 40, 170, 100);
         startButton.setBounds(300, 150, 120, 50);
