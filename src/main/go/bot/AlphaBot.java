@@ -7,17 +7,17 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Bot implements Player{
+public class AlphaBot implements Player{
 
     private GameEngine gameEngine;
     private BoardFieldOwnership color;
     private GameEngineStatus currentStatus;
     private String name;
 
-    public Bot(BoardFieldOwnership color, GameEngineStatus currentStatus){
+    public AlphaBot(BoardFieldOwnership color, GameEngineStatus currentStatus){
         this.color = color;
         this.currentStatus = currentStatus;
-        name = "Bot";
+        name = "AplhaBot";
     }
 
     public String makeMove(){
@@ -89,7 +89,6 @@ public class Bot implements Player{
     @Override
     public void territoryProposition(ArrayList<Point> blackTerritory, ArrayList<Point> whiteTerritory,
                                      BoardFieldOwnership player) {
-        // TODO Auto-generated method stub
 
     }
 

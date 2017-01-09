@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import go.bot.Bot;
+import go.bot.AlphaBot;
 import go.client.main.GoPlayer;
 import go.game.engine.*;
 
@@ -39,7 +39,6 @@ public class Server {
             listener = new ServerSocket(PORT);
             listener.setSoTimeout(100);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -53,7 +52,7 @@ public class Server {
         private BufferedReader in;
         private PrintWriter out;
         private GoPlayer player, opponentPlayer;
-        private Bot alphaBot;
+        private AlphaBot alphaBot;
         private GameEngine game;
         private TerritoryBoard territoryMode;
         private BoardFieldOwnership playerColor;
@@ -256,7 +255,7 @@ public class Server {
 
                             player = new GoPlayer(BoardFieldOwnership.BLACK, GameEngineStatus.GAME);
 //                          opponentPlayer = new GoPlayer(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
-                            alphaBot = new Bot(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
+                            alphaBot = new AlphaBot(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
                             game = new GameEngine(alphaBot ,player);
                             alphaBot.setGameEngine(game);
 
