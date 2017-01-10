@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import go.bot.AlphaBot;
+import go.bot.Bot;
 import go.client.main.GoPlayer;
 import go.game.engine.*;
 
@@ -52,7 +52,7 @@ public class Server {
         private BufferedReader in;
         private PrintWriter out;
         private GoPlayer player, opponentPlayer;
-        private AlphaBot alphaBot;
+        private Bot bot;
         private GameEngine game;
         private TerritoryBoard territoryMode;
         private BoardFieldOwnership playerColor;
@@ -255,9 +255,9 @@ public class Server {
 
                             player = new GoPlayer(BoardFieldOwnership.BLACK, GameEngineStatus.GAME);
 //                          opponentPlayer = new GoPlayer(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
-                            alphaBot = new AlphaBot(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
-                            game = new GameEngine(alphaBot ,player);
-                            alphaBot.setGameEngine(game);
+                            bot = new Bot(BoardFieldOwnership.WHITE, GameEngineStatus.GAME);
+                            game = new GameEngine(bot,player);
+                            bot.setGameEngine(game);
 
                             playerColor = BoardFieldOwnership.BLACK;
 
@@ -267,7 +267,7 @@ public class Server {
                         case "SINGLEPLAYER_MOVE":
                             try{
                                 game.makeMove(x, y, player);
-                                out.println("SINGLEPLAYER_MOVE_OK " + x + " " + y + " " + alphaBot.makeMove());
+                                out.println("SINGLEPLAYER_MOVE_OK " + x + " " + y + " " + bot.makeMove());
                             }
                             catch(Exception e){
                                 System.out.println(game.getCurrentPlayer());
@@ -290,25 +290,25 @@ public class Server {
                             break;
                         case "SINGLEPLAYER_SUGGEST_TERRITORY":
                             territoryMode.getFinishBoardFields(playerColor);
-                            out.println("SHOW_RESULT " + game.getWinnerMessage(alphaBot.getName(), name));
+                            out.println("SHOW_RESULT " + game.getWinnerMessage(bot.getName(), name));
                             break;
                         case "SINGLEPLAYER_PASS":
                             if(game.passTurn(player)){
                                 game.restoreGameBoard();
-                                alphaBot.suggestTerritory();
+                                bot.suggestTerritory();
                                 out.println("SINGLEPLAYER_SUGGEST_TERRITORY");
                             }
                             break;
                         case "SINGLEPLAYER_RESUME_GAME":
                             game.restoreGameBoard();
                             game.resumeGame(player);
-                            alphaBot.notifyGameStateChanged(GameEngineStatus.GAME);
-                            String botMove = alphaBot.makeMove();
+                            bot.notifyGameStateChanged(GameEngineStatus.GAME);
+                            String botMove = bot.makeMove();
                             out.println("SINGLEPLAYER_BOT_MOVE " + botMove);
                             System.out.println("single Player resume : " + botMove);
                             break;
                         case "SINGLEPLAYER_SHOW_RESULT":
-                            out.println("SHOW_RESULT " + game.getWinnerMessage(alphaBot.getName(), name));
+                            out.println("SHOW_RESULT " + game.getWinnerMessage(bot.getName(), name));
                             break;
                     }
                     if (input == null) {

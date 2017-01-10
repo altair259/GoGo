@@ -7,14 +7,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class AlphaBot implements Player{
+public class Bot implements Player{
 
     private GameEngine gameEngine;
     private BoardFieldOwnership color;
     private GameEngineStatus currentStatus;
     private String name;
 
-    public AlphaBot(BoardFieldOwnership color, GameEngineStatus currentStatus){
+    public Bot(BoardFieldOwnership color, GameEngineStatus currentStatus){
         this.color = color;
         this.currentStatus = currentStatus;
         name = "AplhaBot";

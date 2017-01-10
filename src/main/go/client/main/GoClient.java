@@ -24,13 +24,14 @@ public class GoClient {
     private BufferedReader in;
     private PrintWriter out;
     private JFrame frame = new JFrame("Game Go Menu");
-    private JLabel currentPlayerLabel = new JLabel("Logged As");
+    private JLabel currentPlayerLabel = new JLabel("Welcome");
     private String playerName = "";
     private JLabel playerNameLabel = new JLabel();
     private JLabel currnetlyOnlineLabel = new JLabel("Onilne");
     private JList<String> onlinePlayersList = new JList<String>();
     private JScrollPane onlinePlayersScrollPane = new JScrollPane(onlinePlayersList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
     private JButton startButton = new JButton("START");
+    private JButton exitButton = new JButton("EXIT");
     private HashSet<String> onlinePlayers = new HashSet<String>();
     private BoardFrame boardFrame;
     private BoardFieldOwnership playerColor, opponentColor;
@@ -44,18 +45,19 @@ public class GoClient {
     public GoClient(int port) {
         PORT = port;
 
-        onlinePlayers.add("AlphaBot");
+        onlinePlayers.add("Bot");
 
         currnetlyOnlineLabel.setHorizontalAlignment(SwingConstants.CENTER);
         playerNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         currentPlayerLabel.setForeground(Color.BLACK);
-        currentPlayerLabel.setBounds(300, 50, 170, 20);
-        playerNameLabel.setForeground(Color.MAGENTA);
+        currentPlayerLabel.setBounds(320, 50, 170, 20);
+        playerNameLabel.setForeground(Color.GREEN);
         playerNameLabel.setBounds(300, 70, 170, 20);
         currnetlyOnlineLabel.setForeground(Color.BLACK);
         currnetlyOnlineLabel.setBounds(10, 20, 170, 20);
         onlinePlayersScrollPane.setBounds(10, 40, 170, 100);
-        startButton.setBounds(300, 150, 120, 50);
+        startButton.setBounds(300, 100, 120, 50);
+        exitButton.setBounds(300, 160, 120, 50);
         onlinePlayersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         try {
@@ -70,11 +72,18 @@ public class GoClient {
         frame.add(currnetlyOnlineLabel);
         frame.add(onlinePlayersScrollPane);
         frame.add(startButton);
+        frame.add(exitButton);
         frame.setSize(500, 250);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.lightGray);
 
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.exit(0);
 
+            }
+        });
         // Add Listeners
         startButton.addActionListener(new ActionListener() {
 
@@ -90,7 +99,7 @@ public class GoClient {
                     );
                 } else {
                     opponentName = challangeUser;
-                    if (opponentName.equals("AlphaBot")) {
+                    if (opponentName.equals("Bot")) {
                         singleplayerMode = true;
                         out.println("SINGLEPLAYER_MODE " + playerName);
                     } else {
