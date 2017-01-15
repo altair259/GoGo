@@ -8,11 +8,13 @@ public class Validator {
 	private HashSet<Point> visited = null;
 	private Stone[][] tab = new Stone[19][19];
 	private ArrayList<Point> forRemove = new ArrayList<Point>();
-	
+	private Stone[][] backupTab1 = new Stone[19][19];
+	private Stone[][] backupTab2 = new Stone[19][19];
+
 	
 	 public boolean isLegal(int x, int y, Stone color) {
 		 System.out.println(color);
-		 if(tab[x][y] == null && isSuicide(x,y,color)){
+		 if(tab[x][y] == null && isSuicide(x,y,color) /*&& !checkKo(x,y,color)*/){
 			 tab[x][y] = color;
 			 updateStones(x,y,color);
 			 return true;
@@ -47,7 +49,7 @@ public class Validator {
 		if( x == -1 || x == 19 || y == -1 || y == 19 || tab[x][y] == null || tab[x][y] != color){
 			return;
 		}
-//	
+	
 		
 		forRemove.add(new Point(x,y));
 		tab[x][y]= null;
@@ -66,16 +68,54 @@ public class Validator {
 		tab[x][y] = null;
 		return result;
 	}
+	public void backupBoard(){
+		for(int i=0; i<backupTab1.length; i++){ 
+            for(int j=0; j<backupTab1[i].length; j++) 
+                backupTab2[i][j] = backupTab1[i][j];
+		}
+		for(int i=0; i<tab.length; i++){ 
+            for(int j=0; j<tab[i].length; j++) 
+                backupTab1[i][j] = tab[i][j]; 
 		
+		}
+	}
+	public boolean checkKo(int k, int l, Stone color){
+		boolean isKo;
+		Stone [][] backupTab3 = new Stone[19][19];
+		for(int i=0; i<tab.length; i++){ 
+            for(int j=0; j<tab[i].length; j++){ 
+                backupTab3[i][j] = tab[i][j];
+            }
+		}
+		tab[k][l] = color;
+		updateStones(k,l,color);
+		isKo = true;
+		for(int i=0; i<tab.length; i++){ 
+            for(int j=0; j<tab[i].length; j++){ 
+                if(tab[k][l] != backupTab2[i][j]){
+                	 isKo = false;
+                } 	
+            }
+	
+		}
+		for(int i=0; i<backupTab3.length; i++){ 
+            for(int j=0; j<backupTab3[i].length; j++){ 
+                tab[i][j] = backupTab3[i][j];
+            }
+		}
+		return isKo;
+	}
+	
+	
+	
 	public boolean DFS(int x, int y, Stone color){
 		if(visited.contains(new Point(x,y)) || x == -1 || x == 19 || y == -1 || y == 19 || (tab[x][y] != null && tab[x][y] != color)){
 			System.out.println(x + " " + y + " " + color + " return false");
 			return false;
 		}
-		System.out.println(x + " " + y + " " + color);
+		
 		visited.add(new Point(x,y));
 		if(tab[x][y] == null){
-			System.out.println("return true");
 			return true;
 		}
 		return (
