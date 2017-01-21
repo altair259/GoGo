@@ -1,3 +1,7 @@
+/*
+ * 
+ */
+package program;
 import java.awt.Point;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -7,6 +11,9 @@ import java.util.ArrayList;
 
 import org.json.simple.JSONObject;
 
+/**
+ * The Class Bridge.
+ */
 public class Bridge implements Runnable {
 	private Socket socket2;
 	private Socket socket;
@@ -20,6 +27,12 @@ public class Bridge implements Runnable {
 	private JSONObject transmitData = null;
 	private ArrayList<Point> forRemove;
 	
+	/**
+	 * Instantiates a new bridge.
+	 *
+	 * @param socket the socket
+	 * @param socket2 the socket 2
+	 */
 	public Bridge(Socket socket, Socket socket2) {
         this.socket = socket;
         this.socket2 = socket2;
@@ -36,7 +49,8 @@ public class Bridge implements Runnable {
     }
 	@Override
 	public void run() {
-		System.out.println("Ruszył wątek panowie!");
+		
+		System.out.println("Ruszył wątek !");
 		try {
 			int moveX, moveY;
 
@@ -105,3 +119,4 @@ public class Bridge implements Runnable {
 	}
 
 }
+
