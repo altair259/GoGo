@@ -1,4 +1,3 @@
-
 package program;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -15,7 +14,15 @@ public class Validator {
 	private Stone[][] backupTab2 = new Stone[19][19];
 
 	
-	 public boolean isLegal(int x, int y, Stone color) {
+	 /**
+ 	 * Checks if is legal.
+ 	 *
+ 	 * @param x the x
+ 	 * @param y the y
+ 	 * @param color the color
+ 	 * @return true, if is legal
+ 	 */
+ 	public boolean isLegal(int x, int y, Stone color) {
 		 System.out.println(color);
 		 if(tab[x][y] == null && !isSuicide(x,y,color) && !checkKo(x,y,color)){
 			 System.out.println(x + ", " + y + " is OK!");
@@ -52,12 +59,24 @@ public class Validator {
 		}
 	}
 	
+	/**
+	 * Gets the places for remove.
+	 *
+	 * @return the places for remove
+	 */
 	public ArrayList<Point> getPlacesForRemove(){
 		ArrayList<Point> result = forRemove;
 		forRemove = new ArrayList<Point>();
 		return result;
 	}
 	
+	/**
+	 * Removes the group of stones.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param color the color
+	 */
 	private void removeGroupOfStones(int x, int y ,Stone color){
 		
 		if( x == -1 || x == 19 || y == -1 || y == 19 || tab[x][y] == null || tab[x][y] != color){
@@ -77,6 +96,14 @@ public class Validator {
 	}
 	
 	
+	/**
+	 * Checks if is suicide.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param color the color
+	 * @return true, if is suicide
+	 */
 	public boolean isSuicide( int x, int y, Stone color){
 		tab[x][y] = color;
 		visited = new HashSet<Point>();
@@ -90,6 +117,10 @@ public class Validator {
 		tab[x][y] = null;
 		return result;
 	}
+	
+	/**
+	 * Backup board.
+	 */
 	public void backupBoard(){
 		for(int i=0; i<backupTab1.length; i++){ 
             for(int j=0; j<backupTab1[i].length; j++) 
@@ -101,6 +132,15 @@ public class Validator {
 		
 		}
 	}
+	
+	/**
+	 * Check ko.
+	 *
+	 * @param x the x
+	 * @param y the y
+	 * @param color the color
+	 * @return true, if successful
+	 */
 	public boolean checkKo(int x, int y, Stone color){
 		boolean isKo = false;
 		Stone [][] backupTab3 = new Stone[19][19];
